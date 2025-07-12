@@ -159,23 +159,6 @@ function App() {
 
     // Immediately update the active tab state for instant UI feedback
     setActiveTab(newTab);
-
-    // Optional: Add subtle content transition without blocking tab state
-    if (contentRef.current) {
-      gsap.fromTo(contentRef.current,
-        {
-          opacity: 0.8,
-          scale: 0.98
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.2,
-          ease: "power2.out",
-          force3D: true
-        }
-      );
-    }
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
