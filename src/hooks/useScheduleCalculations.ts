@@ -78,8 +78,8 @@ export const useScheduleCalculations = (
           
           console.log(`💰 Found single shift ${combination.combination} (${combination.hours}h) = Rs ${shiftAmount.toFixed(2)}`);
           
-          // Check if this date is up to today for month-to-date calculation
-          if (workMonth === today.getMonth() && workYear === today.getFullYear() && workDate <= today) {
+          // Check if this date is up to and INCLUDING today for month-to-date calculation
+          if (workMonth === today.getMonth() && workYear === today.getFullYear() && workDate.getDate() <= today.getDate()) {
             monthToDate += shiftAmount;
             console.log(`📈 Added to month-to-date: Rs ${shiftAmount.toFixed(2)}`);
           }
@@ -114,7 +114,7 @@ export const useScheduleCalculations = (
           
           console.log(`💰 Found multi-combination ${multiCombination.combination}, adjusting by Rs ${difference.toFixed(2)}`);
           
-          if (workMonth === today.getMonth() && workYear === today.getFullYear() && workDate <= today) {
+          if (workMonth === today.getMonth() && workYear === today.getFullYear() && workDate.getDate() <= today.getDate()) {
             monthToDate += difference;
           }
         }
