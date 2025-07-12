@@ -64,25 +64,27 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                className="relative h-12 flex items-center justify-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
+                className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
               >
-                {/* Container for icon and text */}
-                <div className="flex items-center justify-center space-x-2 h-full">
+                {/* Container for icon and text with dynamic justification */}
+                <div className={`flex items-center h-full w-full transition-all duration-300 ${
+                  showText ? 'justify-center space-x-2' : 'justify-center'
+                }`}>
                   {/* Icon - always visible */}
                   <Icon 
-                    className={`w-5 h-5 transition-colors duration-200 flex-shrink-0 ${
+                    className={`w-5 h-5 transition-all duration-300 flex-shrink-0 ${
                       isActive ? 'text-blue-600' : 'text-gray-600'
+                    } ${
+                      showText ? '' : 'transform-none'
                     }`} 
                   />
                   
-                  {/* Text - slides in horizontally */}
-                  <div className="overflow-hidden">
+                  {/* Text - slides in horizontally with width animation */}
+                  <div className={`overflow-hidden transition-all duration-300 ${
+                    showText ? 'max-w-[80px] opacity-100' : 'max-w-0 opacity-0'
+                  }`}>
                     <span 
-                      className={`text-xs font-medium whitespace-nowrap block ${
-                        showText 
-                          ? 'opacity-100' 
-                          : 'opacity-0'
-                      } ${
+                      className={`text-xs font-medium whitespace-nowrap block transition-all duration-300 ${
                         isActive ? 'text-blue-600' : 'text-gray-600'
                       }`}
                     >
