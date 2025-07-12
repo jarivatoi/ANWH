@@ -13,6 +13,8 @@ interface TabNavigationProps {
 }
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
+  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  
   const tabs: Tab[] = [
     { id: 'calendar', icon: Calendar, label: 'Calendar' },
     { id: 'settings', icon: Settings, label: 'Settings' },
@@ -58,12 +60,15 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
           {tabs.map((tab, index) => {
             const Icon = tab.icon;
             const isActive = tab.id === activeTab;
-            const showText = isActive;
+            const isHovered = hoveredTab === tab.id;
+            const showText = isActive || isHovered;
 
             return (
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
+                onMouseEnter={() => setHoveredTab(tab.id)}
+                onMouseLeave={() => setHoveredTab(null)}
                 className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
               >
                 {/* Container for icon and text with dynamic justification */}
@@ -73,7 +78,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                   {/* Icon - always visible */}
                   <Icon 
                     className={`w-5 h-5 transition-all duration-300 flex-shrink-0 ${
-                      isActive ? 'text-blue-600' : 'text-gray-600'
+                      isActive ? 'text-blue-600' : isHovered ? 'text-blue-500' : 'text-gray-600'
                     } ${
                       showText ? '' : 'transform-none'
                     }`} 
@@ -85,7 +90,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                   }`}>
                     <span 
                       className={`text-xs font-medium whitespace-nowrap block transition-all duration-300 ${
-                        isActive ? 'text-blue-600' : 'text-gray-600'
+                        isActive ? 'text-blue-600' : isHovered ? 'text-blue-500' : 'text-gray-600'
                       }`}
                     >
                       {tab.label}
