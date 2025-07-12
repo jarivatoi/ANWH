@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Settings, Database } from 'lucide-react';
 
 interface Tab {
