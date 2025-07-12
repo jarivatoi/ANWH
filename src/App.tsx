@@ -157,6 +157,9 @@ function App() {
   const handleTabChange = (newTab: 'calendar' | 'settings' | 'data') => {
     if (newTab === activeTab || !contentRef.current) return;
 
+    // Immediately update the active tab state for instant UI feedback
+    setActiveTab(newTab);
+
     const tl = gsap.timeline({
       defaults: {
         ease: "power2.inOut"
@@ -169,9 +172,6 @@ function App() {
       scale: 0.98,
       duration: 0.25,
       force3D: true
-    })
-    .call(() => {
-      setActiveTab(newTab);
     })
     .fromTo(contentRef.current, 
       {
