@@ -14,6 +14,7 @@ interface TabNavigationProps {
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
   const [hoverProgress, setHoverProgress] = useState<{ [key: string]: number }>({});
+  const [touchedTab, setTouchedTab] = useState<string | null>(null);
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   
   const tabs: Tab[] = [
@@ -60,6 +61,66 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
     }));
   };
 
+  // Mobile touch handlers
+  const handleTouchStart = (tabId: string, event: React.TouchEvent<HTMLButtonElement>) => {
+    // Skip dynamic hover effects for active tab
+    if (tabId === activeTab) return;
+    
+    setTouchedTab(tabId);
+    
+    const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const touch = event.touches[0];
+    const touchX = touch.clientX;
+    
+    // Calculate distance from center (0 = center, 1 = edge)
+    const distanceFromCenter = Math.abs(touchX - centerX) / (rect.width / 2);
+    
+    // Invert so 1 = center, 0 = edge
+    const progress = Math.max(0, Math.min(1, 1 - distanceFromCenter));
+    
+    setHoverProgress(prev => ({
+      ...prev,
+      [tabId]: progress
+    }));
+  };
+
+  const handleTouchMove = (tabId: string, event: React.TouchEvent<HTMLButtonElement>) => {
+    // Skip dynamic hover effects for active tab
+    if (tabId === activeTab) return;
+    
+    // Only process if this tab is currently being touched
+    if (touchedTab !== tabId) return;
+    
+    const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const touch = event.touches[0];
+    const touchX = touch.clientX;
+    
+    // Calculate distance from center (0 = center, 1 = edge)
+    const distanceFromCenter = Math.abs(touchX - centerX) / (rect.width / 2);
+    
+    // Invert so 1 = center, 0 = edge
+    const progress = Math.max(0, Math.min(1, 1 - distanceFromCenter));
+    
+    setHoverProgress(prev => ({
+      ...prev,
+      [tabId]: progress
+    }));
+  };
+
+  const handleTouchEnd = (tabId: string) => {
+    // Skip dynamic hover effects for active tab
+    if (tabId === activeTab) return;
+    
+    setTouchedTab(null);
+    setHoverProgress(prev => ({
+      ...prev,
+      [tabId]: 0
+    }));
+  };
   return (
     <div className="flex justify-center mb-6">
       <div className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-gray-200/50 p-2">
@@ -111,6 +172,10 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                 onClick={() => onTabChange(tab.id)}
                 onMouseMove={(e) => handleMouseMove(tab.id, e)}
                 onMouseLeave={() => !isActive && handleMouseLeave(tab.id)}
+                onTouchStart={(e) => handleTouchStart(tab.id, e)}
+                onTouchMove={(e) => handleTouchMove(tab.id, e)}
+                onTouchEnd={() => handleTouchEnd(tab.id)}
+                onTouchCancel={() => handleTouchEnd(tab.id)}
                 className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
               >
                 {/* Container for icon and text with dynamic justification */}
