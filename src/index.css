@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force white background from the very start */
+html {
+  background: white !important;
+  background-color: white !important;
+}
+
+body {
+  background: white !important;
+  background-color: white !important;
+}
+
 /* iPhone fullscreen and safe area support */
 @supports (padding: max(0px)) {
   body {
@@ -17,11 +28,15 @@ html, body {
   height: 100vh;
   height: -webkit-fill-available;
   overflow-x: hidden;
+  background: white !important;
+  background-color: white !important;
 }
 
 #root {
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  background: white !important;
+  background-color: white !important;
 }
 
 /* Hide address bar on iPhone */
