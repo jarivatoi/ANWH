@@ -30,6 +30,9 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const showBackground = backgroundIndex !== -1;
 
   const handleMouseMove = (tabId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    // Skip dynamic hover effects for active tab
+    if (tabId === activeTab) return;
+    
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -48,6 +51,9 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   };
 
   const handleMouseLeave = (tabId: string) => {
+    // Skip dynamic hover effects for active tab
+    if (tabId === activeTab) return;
+    
     setHoverProgress(prev => ({
       ...prev,
       [tabId]: 0
@@ -104,7 +110,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                 ref={el => tabRefs.current[tab.id] = el}
                 onClick={() => onTabChange(tab.id)}
                 onMouseMove={(e) => handleMouseMove(tab.id, e)}
-                onMouseLeave={() => handleMouseLeave(tab.id)}
+                onMouseLeave={() => !isActive && handleMouseLeave(tab.id)}
                 className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
               >
                 {/* Container for icon and text with dynamic justification */}
