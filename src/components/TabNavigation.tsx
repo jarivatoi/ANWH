@@ -28,6 +28,11 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
     onTabChange(tabId);
   };
   
+  const handleTouchStart = (tabId: string) => {
+    // For mobile: Update state immediately on touch start
+    setLocalActiveTab(tabId);
+  };
+  
   const tabs: Tab[] = [
     { id: 'calendar', icon: Calendar, label: 'Calendar' },
     { id: 'settings', icon: Settings, label: 'Settings' },
@@ -80,9 +85,15 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
+                onTouchStart={() => handleTouchStart(tab.id)}
                 onMouseEnter={() => setHoveredTab(tab.id)}
                 onMouseLeave={() => setHoveredTab(null)}
                 className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
+                style={{
+                  // Critical: Fix touch events for mobile
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent'
+                }}
               >
                 {/* Container for icon and text with dynamic justification */}
                 <div className={`flex items-center h-full w-full transition-all duration-300 ${
