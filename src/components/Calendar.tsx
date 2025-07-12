@@ -972,7 +972,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             transform: 'translate3d(0,0,0)', // Force hardware acceleration
             backfaceVisibility: 'hidden',     // Prevent flickering
             userSelect: 'none',
-            WebkitUserSelect: 'none'
+            WebkitUserSelect: 'none',
             minHeight: '300px' // Ensure minimum height for calendar grid
           }}
         >
