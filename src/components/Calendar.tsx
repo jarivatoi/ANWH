@@ -752,8 +752,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
             alignItems: 'center',
-            paddingTop: '2rem',
-            paddingBottom: '2rem'
+            padding: '1rem'
           }}
         >
           <div 
@@ -761,7 +760,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
-              maxHeight: '85vh',
+              maxHeight: '90vh',
               minHeight: 'auto'
             }}
             onClick={(e) => {
@@ -796,7 +795,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                 WebkitOverflowScrolling: 'touch',
                 touchAction: 'pan-y',
                 overscrollBehavior: 'contain',
-                maxHeight: '65vh'
+                maxHeight: '70vh'
               }}
             >
               {/* Warning Icon and Message */}
