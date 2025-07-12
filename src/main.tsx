@@ -3,6 +3,23 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
+// iPhone fullscreen support
+function enableFullscreen() {
+  // Hide address bar on iPhone
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    setTimeout(() => {
+      window.scrollTo(0, 1);
+    }, 100);
+    
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+      }, 100);
+    });
+  }
+}
+
 // Enhanced app initialization with error handling
 try {
   const rootElement = document.getElementById('root');
@@ -17,6 +34,9 @@ try {
       <App />
     </StrictMode>
   );
+  
+  // Enable fullscreen after render
+  enableFullscreen();
   
 } catch (error) {
   console.error('Failed to initialize app:', error);

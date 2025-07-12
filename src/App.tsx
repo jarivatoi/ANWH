@@ -481,7 +481,14 @@ function App() {
           </div>
           
           <div className="mt-8 w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-gradient-to-r from-blue-400 to-purple-600 h-2 rounded-full animate-pulse" style={{ width: '75%' }}></div>
+            <div 
+              className="bg-gradient-to-r from-blue-400 to-purple-600 h-2 rounded-full transition-all duration-100 ease-out" 
+              style={{ width: `${loadingProgress}%` }}
+            ></div>
+          </div>
+          
+          <div className="mt-2 text-center">
+            <span className="text-sm text-gray-600">{loadingProgress}%</span>
           </div>
                     </div>
       </div>
