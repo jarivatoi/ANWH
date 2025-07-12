@@ -160,34 +160,22 @@ function App() {
     // Immediately update the active tab state for instant UI feedback
     setActiveTab(newTab);
 
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power2.inOut"
-      }
-    });
-
-    tl.to(contentRef.current, {
-      opacity: 0,
-      y: -20,
-      scale: 0.98,
-      duration: 0.25,
-      force3D: true
-    })
-    .fromTo(contentRef.current, 
-      {
-        opacity: 0,
-        y: 20,
-        scale: 0.98,
-        force3D: true
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.3,
-        force3D: true
-      }
-    );
+    // Optional: Add subtle content transition without blocking tab state
+    if (contentRef.current) {
+      gsap.fromTo(contentRef.current,
+        {
+          opacity: 0.8,
+          scale: 0.98
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.2,
+          ease: "power2.out",
+          force3D: true
+        }
+      );
+    }
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
