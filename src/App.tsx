@@ -22,6 +22,7 @@ function App() {
   // Add artificial loading delay for better UX
   const [artificialLoading, setArtificialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [smoothProgress, setSmoothProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Use IndexedDB hooks
@@ -55,33 +56,37 @@ function App() {
 
   // Add artificial loading delay to ensure users can read the loading screen
   useEffect(() => {
-    // Reset progress when loading starts
-    setLoadingProgress(0);
+    let animationFrame: number;
+    let startTime: number;
+    const duration = 3000; // 3 seconds
     
-    // Animate progress bar over 3 seconds
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        
-        // Realistic progress animation with varying speeds
-        if (prev < 20) return prev + 2;      // Slow start
-        if (prev < 60) return prev + 3;      // Medium speed
-        if (prev < 90) return prev + 1.5;    // Slow down
-        return prev + 0.5;                   // Very slow finish
-      });
-    }, 50); // Update every 50ms for smooth animation
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Smooth easing function for natural progress
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const smoothedProgress = Math.round(easeOutQuart * 100);
+      
+      setSmoothProgress(smoothedProgress);
+      
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setSmoothProgress(100);
+        setTimeout(() => {
+          setArtificialLoading(false);
+        }, 100); // Small delay after reaching 100%
+      }
+    };
     
-    const timer = setTimeout(() => {
-      setLoadingProgress(100); // Ensure we reach 100%
-      setArtificialLoading(false);
-    }, 3000); // 3 seconds minimum loading time
-
+    animationFrame = requestAnimationFrame(animate);
+    
     return () => {
-      clearTimeout(timer);
-      clearInterval(progressInterval);
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
     };
   }, []);
 
@@ -507,12 +512,15 @@ function App() {
           <div className="mt-8 w-full bg-gray-200 rounded-full h-2">
             <div 
               className="bg-gradient-to-r from-blue-400 to-purple-600 h-2 rounded-full transition-all duration-100 ease-out" 
-              style={{ width: `${loadingProgress}%` }}
+              style={{ 
+                width: `${smoothProgress}%`,
+                transition: 'width 0.1s ease-out'
+              }}
             ></div>
           </div>
           
           <div className="mt-2 text-center">
-            <span className="text-sm text-gray-600">{loadingProgress}%</span>
+            <span className="text-sm text-gray-600 font-mono tabular-nums">{smoothProgress}%</span>
           </div>
                     </div>
       </div>
