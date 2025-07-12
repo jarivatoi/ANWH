@@ -21,7 +21,6 @@ function App() {
   
   // Add artificial loading delay for better UX
   const [artificialLoading, setArtificialLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Use IndexedDB hooks
@@ -55,39 +54,11 @@ function App() {
 
   // Add artificial loading delay to ensure users can read the loading screen
   useEffect(() => {
-    // Start progress animation
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        // Increase progress at different rates for realistic feel
-        if (prev < 20) return prev + 2;      // Slow start
-        if (prev < 60) return prev + 3;      // Medium speed
-        if (prev < 90) return prev + 1.5;    // Slow down near end
-        return prev + 0.5;                   // Very slow at end
-      });
-    }, 50); // Update every 50ms for smooth animation
-
     const timer = setTimeout(() => {
-      setLoadingProgress(100); // Ensure it reaches 100%
-      setTimeout(() => {
-        setArtificialLoading(false);
-      }, 200); // Small delay after reaching 100%
-    }, 3000); // 3 seconds total
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(progressInterval);
-    };
-  }, []);
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
       setArtificialLoading(false);
-    };
+    }, 3000); // 3 seconds minimum loading time
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Combined loading state
@@ -510,15 +481,7 @@ function App() {
           </div>
           
           <div className="mt-8 w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-gradient-to-r from-blue-400 to-purple-600 h-2 rounded-full transition-all duration-100 ease-out" 
-              style={{ width: `${loadingProgress}%` }}
-            ></div>
-          </div>
-          
-          {/* Progress percentage */}
-          <div className="mt-2 text-center">
-            <span className="text-sm text-gray-500">{Math.round(loadingProgress)}%</span>
+            <div className="bg-gradient-to-r from-blue-400 to-purple-600 h-2 rounded-full animate-pulse" style={{ width: '75%' }}></div>
           </div>
                     </div>
       </div>

@@ -92,12 +92,12 @@ export const MenuPanel: React.FC<MenuPanelProps> = ({
   const getStorageDisplayInfo = () => {
     if (!storageInfo) return null;
     
-    // If we got a small estimate (100MB or less), show iPhone-specific info
-    if (storageInfo.available <= 100 * 1024 * 1024) {
+    // If we got the fallback 50MB estimate, show more realistic info
+    if (storageInfo.available === 50 * 1024 * 1024) {
       return {
         isEstimate: true,
-        actualAvailable: "100+ MB", 
-        note: "iPhone Safari storage - sufficient for thousands of shifts"
+        actualAvailable: "Several GB", // Modern iPhones have much more
+        note: "Actual storage is much larger - this is a browser limitation"
       };
     }
     
@@ -172,7 +172,7 @@ export const MenuPanel: React.FC<MenuPanelProps> = ({
 
             <div className="border-t border-green-200 pt-3">
               <div className="text-center text-xs text-green-700 space-y-1">
-                <p><strong>✅ Ample Storage:</strong> 100+ MB available</p>
+                <p><strong>✅ Massive Storage:</strong> Hundreds of MB available</p>
                 <p><strong>✅ Lightning Fast:</strong> Optimized for large datasets</p>
                 <p><strong>✅ Years of Data:</strong> Store thousands of work shifts</p>
               </div>

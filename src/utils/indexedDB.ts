@@ -370,34 +370,20 @@ class WorkScheduleDB {
       try {
         const estimate = await navigator.storage.estimate();
         console.log('📊 Storage estimate:', estimate);
-        
-        // Check if we got a realistic quota (not the browser's fallback)
-        const quota = estimate.quota || 0;
-        const usage = estimate.usage || 0;
-        
-        // If quota is suspiciously large or zero, it's likely a fallback
-        if (quota === 0 || quota > 1000 * 1024 * 1024) { // > 1GB indicates fallback
-          console.log('📊 Using iPhone-optimized storage estimate');
-          return {
-            used: usage,
-            available: 100 * 1024 * 1024 // 100MB realistic estimate for iPhone Safari
-          };
-        }
-        
         return {
-          used: usage,
-          available: quota
+          used: estimate.usage || 0,
+          available: estimate.quota || 0
         };
       } catch (error) {
         console.warn('Storage estimate not available:', error);
       }
     }
     
-    // Fallback for older browsers
-    console.log('📊 Using fallback storage estimate');
+    // Fallback estimates - iPhone Safari often can't provide exact quota
+    console.log('📊 Using fallback storage estimate for iPhone Safari');
     return {
       used: 0,
-      available: 100 * 1024 * 1024 // 100MB realistic estimate
+      available: 50 * 1024 * 1024 // 50MB fallback (actual is much more)
     };
   }
 }

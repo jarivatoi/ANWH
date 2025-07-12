@@ -79,7 +79,9 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                   <div className="overflow-hidden">
                     <span 
                       className={`text-xs font-medium whitespace-nowrap block ${
-                        'opacity-100'
+                        showText 
+                          ? 'opacity-100' 
+                          : 'opacity-0'
                       } ${
                         isActive ? 'text-blue-600' : 'text-gray-600'
                       }`}
