@@ -31,6 +31,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const handleTouchStart = (tabId: string) => {
     // For mobile: Update state immediately on touch start
     setLocalActiveTab(tabId);
+    // Also call parent immediately for iPhone
+    onTabChange(tabId);
   };
   
   const tabs: Tab[] = [
