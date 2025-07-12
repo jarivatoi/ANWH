@@ -751,8 +751,9 @@ export const Calendar: React.FC<CalendarProps> = ({
             zIndex: 9999,
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
-            alignItems: 'flex-start',
-            paddingTop: '10vh'
+            alignItems: 'center',
+            paddingTop: '2rem',
+            paddingBottom: '2rem'
           }}
         >
           <div 
@@ -760,8 +761,8 @@ export const Calendar: React.FC<CalendarProps> = ({
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
-              marginBottom: '2rem',
-              maxHeight: '80vh'
+              maxHeight: '85vh',
+              minHeight: 'auto'
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -790,12 +791,12 @@ export const Calendar: React.FC<CalendarProps> = ({
 
             {/* Content */}
             <div 
-              className="overflow-y-auto p-6"
+              className="p-6 overflow-y-auto"
               style={{
                 WebkitOverflowScrolling: 'touch',
                 touchAction: 'pan-y',
                 overscrollBehavior: 'contain',
-                maxHeight: '60vh'
+                maxHeight: '65vh'
               }}
             >
               {/* Warning Icon and Message */}
