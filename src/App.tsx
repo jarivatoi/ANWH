@@ -473,7 +473,7 @@ function App() {
   if (isLoading) {
     console.log('⏳ Data still loading, showing enhanced loading screen');
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100" style={{ minHeight: '100vh', minHeight: '-webkit-fill-available' }}>
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
           <div className="flex items-center justify-center space-x-3 mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
@@ -522,65 +522,71 @@ function App() {
   // Main app interface - show when data is ready
   console.log('🎯 Showing main app interface');
   return (
-
-
     <>
       <div 
-        className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 select-none"
+        className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 select-none p-4"
+        style={{ 
+          minHeight: '100vh', 
+          minHeight: '-webkit-fill-available',
+          paddingTop: 'max(1rem, env(safe-area-inset-top))',
+          paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+          paddingLeft: 'max(1rem, env(safe-area-inset-left))',
+          paddingRight: 'max(1rem, env(safe-area-inset-right))'
+        }}
       >
         {/* Tab Navigation */}
-        <div className="pt-6">
+        <div className="mb-4">
           <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
         </div>
         
-          {/* Content with smooth transitions */}
-          <div 
-            ref={contentRef}
-            style={{
-              transform: 'translate3d(0,0,0)',
-              backfaceVisibility: 'hidden'
-            }}
-          >
-            {activeTab === 'calendar' ? (
-              <Calendar
-                currentDate={currentDate}
-                schedule={schedule}
-                specialDates={specialDates}
-                onDateClick={handleDateClick}
-                onNavigateMonth={navigateMonth}
-                totalAmount={totalAmount}
-                monthToDateAmount={monthToDateAmount}
-                onDateChange={handleDateChange}
-                scheduleTitle={scheduleTitle}
-                onTitleUpdate={handleTitleUpdate}
-                onResetMonth={handleResetMonth}
-              />
-            ) : activeTab === 'settings' ? (
-              <SettingsPanel
-                settings={settings}
-                onUpdateBasicSalary={updateBasicSalary}
-                onUpdateShiftHours={updateShiftHours}
-              />
-            ) : (
-              <MenuPanel
-                onImportData={handleImportData}
-                onExportData={handleExportData}
-              />
-            )}
-          </div>
-
-          {/* Shift Selection Modal */}
-          {showModal && (
-            <ShiftModal
-              selectedDate={selectedDate}
+        {/* Content with smooth transitions */}
+        <div 
+          ref={contentRef}
+          style={{
+            transform: 'translate3d(0,0,0)',
+            backfaceVisibility: 'hidden'
+          }}
+        >
+          {activeTab === 'calendar' ? (
+            <Calendar
+              currentDate={currentDate}
               schedule={schedule}
               specialDates={specialDates}
-              onToggleShift={toggleShift}
-              onToggleSpecialDate={toggleSpecialDate}
-              onClose={closeModal}
+              onDateClick={handleDateClick}
+              onNavigateMonth={navigateMonth}
+              totalAmount={totalAmount}
+              monthToDateAmount={monthToDateAmount}
+              onDateChange={handleDateChange}
+              scheduleTitle={scheduleTitle}
+              onTitleUpdate={handleTitleUpdate}
+              onResetMonth={handleResetMonth}
+            />
+          ) : activeTab === 'settings' ? (
+            <SettingsPanel
+              settings={settings}
+              onUpdateBasicSalary={updateBasicSalary}
+              onUpdateShiftHours={updateShiftHours}
+            />
+          ) : (
+            <MenuPanel
+              onImportData={handleImportData}
+              onExportData={handleExportData}
             />
           )}
         </div>
+
+        {/* Shift Selection Modal */}
+        {showModal && (
+          <ShiftModal
+            selectedDate={selectedDate}
+            schedule={schedule}
+            specialDates={specialDates}
+            onToggleShift={toggleShift}
+            onToggleSpecialDate={toggleSpecialDate}
+            onClose={closeModal}
+          />
+        )}
+      </div>
     </>
   );
 }

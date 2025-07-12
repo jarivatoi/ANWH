@@ -533,7 +533,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const { shiftsCount, specialDatesCount } = getMonthDataCount();
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden select-none" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden select-none max-w-4xl mx-auto" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200">
         <div className="flex items-center justify-center space-x-3 mb-4">
@@ -967,12 +967,13 @@ export const Calendar: React.FC<CalendarProps> = ({
         {/* Calendar grid - MOBILE OPTIMIZED ANIMATIONS */}
         <div 
           ref={calendarGridRef} 
-          className="grid grid-cols-7 gap-1 sm:gap-2 mb-4 sm:mb-6 select-none"
+          className="grid grid-cols-7 gap-1 sm:gap-2 mb-4 sm:mb-6 select-none w-full"
           style={{
             transform: 'translate3d(0,0,0)', // Force hardware acceleration
             backfaceVisibility: 'hidden',     // Prevent flickering
             userSelect: 'none',
             WebkitUserSelect: 'none'
+            minHeight: '300px' // Ensure minimum height for calendar grid
           }}
         >
           {calendarDays.map((day, index) => {

@@ -124,7 +124,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-center space-x-3 mb-6">
         <SettingsIcon className="w-6 h-6 text-indigo-600" />
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Settings & Configuration</h2>

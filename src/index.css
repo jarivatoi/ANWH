@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 /* iPhone fullscreen and safe area support */
 @supports (padding: max(0px)) {
@@ -43,4 +44,31 @@ input, select, textarea {
 button, .cursor-pointer {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Ensure proper rendering */
+* {
+  box-sizing: border-box;
+}
+
+/* Fix any layout issues */
+.grid {
+  display: grid;
+}
+
+.grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+/* Ensure text is visible */
+.text-gray-900 {
+  color: rgb(17 24 39);
+}
+
+.text-gray-700 {
+  color: rgb(55 65 81);
+}
+
+.text-gray-600 {
+  color: rgb(75 85 99);
 }

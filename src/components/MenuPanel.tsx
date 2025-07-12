@@ -110,7 +110,7 @@ export const MenuPanel: React.FC<MenuPanelProps> = ({
 
   const storageDisplay = getStorageDisplayInfo();
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
+    <div className="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-center space-x-3 mb-8">
         <DataIcon className="w-6 h-6 text-indigo-600" />
         <h2 className="text-2xl font-bold text-gray-900 text-center">Data Management</h2>
