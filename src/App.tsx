@@ -21,6 +21,7 @@ function App() {
   
   // Add artificial loading delay for better UX
   const [artificialLoading, setArtificialLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Use IndexedDB hooks
@@ -54,11 +55,34 @@ function App() {
 
   // Add artificial loading delay to ensure users can read the loading screen
   useEffect(() => {
+    // Reset progress when loading starts
+    setLoadingProgress(0);
+    
+    // Animate progress bar over 3 seconds
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        
+        // Realistic progress animation with varying speeds
+        if (prev < 20) return prev + 2;      // Slow start
+        if (prev < 60) return prev + 3;      // Medium speed
+        if (prev < 90) return prev + 1.5;    // Slow down
+        return prev + 0.5;                   // Very slow finish
+      });
+    }, 50); // Update every 50ms for smooth animation
+    
     const timer = setTimeout(() => {
+      setLoadingProgress(100); // Ensure we reach 100%
       setArtificialLoading(false);
     }, 3000); // 3 seconds minimum loading time
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
   }, []);
 
   // Combined loading state
