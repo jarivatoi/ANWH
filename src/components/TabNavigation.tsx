@@ -14,6 +14,19 @@ interface TabNavigationProps {
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  const [localActiveTab, setLocalActiveTab] = useState<string>(activeTab);
+  
+  // Update local state when prop changes
+  useEffect(() => {
+    setLocalActiveTab(activeTab);
+  }, [activeTab]);
+  
+  const handleTabClick = (tabId: string) => {
+    // Immediately update local state for instant visual feedback
+    setLocalActiveTab(tabId);
+    // Then call parent handler
+    onTabChange(tabId);
+  };
   
   const tabs: Tab[] = [
     { id: 'calendar', icon: Calendar, label: 'Calendar' },
@@ -22,7 +35,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   ];
 
   const getTabIndex = (tabId: string) => tabs.findIndex(tab => tab.id === tabId);
-  const activeIndex = getTabIndex(activeTab);
+  const activeIndex = getTabIndex(localActiveTab);
   
   // Show background only for active tab
   const backgroundIndex = activeIndex;
@@ -59,14 +72,14 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
 
           {tabs.map((tab, index) => {
             const Icon = tab.icon;
-            const isActive = tab.id === activeTab;
+            const isActive = tab.id === localActiveTab;
             const isHovered = hoveredTab === tab.id;
             const showText = isActive || isHovered;
 
             return (
               <button
                 key={tab.id}
-                onClick={() => onTabChange(tab.id)}
+                onClick={() => handleTabClick(tab.id)}
                 onMouseEnter={() => setHoveredTab(tab.id)}
                 onMouseLeave={() => setHoveredTab(null)}
                 className="relative h-12 flex items-center transition-all duration-200 rounded-xl overflow-hidden px-2 pt-2"
